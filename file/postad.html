@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Auction Sale Anything</title>
+
+
+<!-- web-fonts -->  
+<!-- start-smooth-scrolling -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<!-- //smooth-scrolling-of-move-up -->
+</head>
+<body ng-app="mypost" ng-controller="mypostcontroll">
+	<!-- header -->
+	
+    
+    
+    <!-- post ad-->
+    <div class="submit-ad main-grid-border">
+		<div class="container">
+        <br>
+        <br>
+	
+				<div class="upload-ad-photos">
+				<label>Photos for your ad :</label>	
+					<div class="photos-upload-view">
+						
+
+						
+
+						<div class="row container-fluid">
+							<div class="col-lg-4">
+								<input type="file"  ng-model="image1" accept="image/*" onchange="angular.element(this).scope().uploadedFile(this)" ng-required="true" class="btn btn-info"/></div>
+							
+						
+						</div>
+                        <div class="row">
+                        <div class="col-lg-4"><img id="output"  style="width:200px; height:250px" class="img-responsive"/></div>
+                        
+                        </div>
+					
+				</div>
+					
+					<input type="submit" value="Post">					
+			
+					
+					</div>
+			</div>
+		</div>	
+	</div>
+    <script>
+    
+  var app = angular.module('mypost',[]);
+    app.controller('mypostcontroll', function($scope, $http) {
+    	
+    
+    	$scope.files=[];
+		$scope.insert=function(){
+			$scope.image1=$scope.files[0];
+		
+			
+			
+			$http({
+				method:'POST',
+				url:"upload.php",
+				processData:false,
+				transformRequest:function(data){
+					var formData=new FormData();
+					formData.append("image1", $scope.image1);
+					
+
+			      return formData;
+			     
+			  },  
+			  data : $scope.form,
+			  headers: {
+			         'Content-Type': undefined
+			  }
+		   }).success(function(data){
+		        alert(data);
+		        
+		   });
+		   
+			};
+			$scope.uploadedFile=function(element)
+			{
+				$scope.currentFile = element.files[0];
+		    var reader = new FileReader();
+
+		    reader.onload = function(event) {
+		    	var output = document.getElementById('output');
+    			output.src = URL.createObjectURL(element.files[0]);
+	
+		      $scope.image_source = event.target.result
+		      $scope.$apply(function($scope) {
+		        $scope.files = element.files;
+		      });
+		    }
+                    reader.readAsDataURL(element.files[0]);
+		  }
+
+
+		 
+		
+	});
+</script>
+    <!-- //post ad-->
+	
+	
+</body>
+</html>
